@@ -1,10 +1,9 @@
 #!/usr/bin/env amm
+import scala.io.Source
 @main
 def optionalscript(f: String) {
 println("This is the file we will analyze: " + f)
-}
-import scala.io.Source
-val lines = Source.fromFile("caesar.txt").getLines.toVector
+val lines = Source.fromFile(f).getLines.toVector
 val txt = lines.mkString
 val words = txt.split("\\W+").filterNot(_.isEmpty)
 val grouped = words.groupBy(w =>w)
@@ -17,3 +16,4 @@ println("Read " + lines.size + " sections.")
 println("Read " + txt.size + " characters.")
 println("Read " + words.size + " words.")
 println("Read " + grouped.size + " unique words.")
+}
