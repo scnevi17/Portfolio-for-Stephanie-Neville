@@ -1,3 +1,4 @@
+#!/usr/bin/env amm
 import scala.io.Source
 
 import scala.xml._
@@ -20,7 +21,7 @@ def morphology(fName: String) = {
   val words = disctinctwordsscript(fName)
   val parsedWords = words.map (w => (w, parse(w)))
   for (wd <- parsedWords) {
-    println(wd)
+    println(wd._1 + "\t" + wd._2.toVector.mkString(","))
   }
 }
 
