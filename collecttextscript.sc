@@ -1,6 +1,8 @@
 #!/usr/bin/env amm
 import scala.io.Source
 import scala.xml._
+import java.io._
+
 def whatIsIt(n: scala.xml.Node) = {
   n match {
   case el : scala.xml.Elem => "It's an element."
@@ -37,8 +39,20 @@ def getText (s : String) {
   val xmlText = Source.fromFile(s).getLines.mkString
 
   val root = XML.loadString(xmlText)
-  val actualText = collectText(root,"")
-  println(actualText)
+  val cells = root \\ "cell"
+  val cellVector = cells.toVector
+  var count = 0
+  for (cell <- cells) {
+    count = count + 1
+    val fileName = "cell" + count + ".txt"
+    println(fileName)
+    val writer = new PrintWriter(new File(fileName))
+    val actualText = collectText(cell,"")
+    writer.write(actualText)
+    writer.close
+  }
+
+
 
 //require(expectedText == actualText)
 s.split("//W")
