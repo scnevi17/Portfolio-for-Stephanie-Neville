@@ -48,6 +48,11 @@ def getText (s : String) {
     println(fileName)
     val writer = new PrintWriter(new File(fileName))
     val actualText = collectText(cell,"")
+    if (actualText) = collectText(cell,"")
+    if (actualText.isEmpty) {
+    // skip it
+    // }
+    }
     writer.write(actualText)
     writer.close
   }
