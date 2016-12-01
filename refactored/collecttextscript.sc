@@ -55,7 +55,7 @@ def getText (s : String, numberList: String) {
         val fileName = makeFileName(count)
         println(fileName)
         val writer = new PrintWriter(new File(fileName))
-        writer.write(actualText)
+        writer.write(actualText + "\n")
         writer.close
       }
     }
