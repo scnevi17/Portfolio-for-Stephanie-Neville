@@ -8,3 +8,4 @@ Then we can apply one or more of these scripts in sequence:
 
 **1.** `distinctWords.sc` takes one file as its parameter, and spits out a list of unique words.  E.g., `amm distinctWords.sc geneva49all.txt > wordlist.txt` will then save the results in the file `wordlist.txt`
 **2.**  `parse.sc` takes this wordlist as a parameter, sends off requests to Morpheus, and writes out the XML output to a separate file with two columns, word + analyes.  This is handy in case we need to rerun any of the later steps, but don't want to re-fetch over the internet from morpheus. E.g., `amm parse.sc wordlist.txt > analyses.tsv`
+**3.** `alignanalyses.sc` uses both the original words file (e.g., `geneva49all.txt`) and the morphological analyses, and writes out a new file with analyses substituted in where they exist.  E.g., `amm alignanalyses geneva49all.txt analyses.tsv > geneva49anlayzed.txt`
