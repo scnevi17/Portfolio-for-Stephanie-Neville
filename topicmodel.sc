@@ -4,13 +4,8 @@ import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.mllib.clustering.{DistributedLDAModel, EMLDAOptimizer}
 
-val corpus: RDD[String] = sc.wholeTextFiles(fName).map(_._2)
-val tokenized: RDD[Seq[String]] = corpus.map(_.toLowerCase.split("\\s")).
- map(_.filter(_.length > 3).filter(_.forall(java.lang.Character.isLetter)))
-
-// termCounts: Sorted list of (term, termCount) pairs
 val termCounts: Array[(String, Long)] =
- tokenized.flatMap(_.map(_ - 1L)).reduceByKey(_ + _).collect().sortBy(-_._2)
+ (f).flatMap(_.map(_ - 1L)).reduceByKey(_ + _).collect().sortBy(-_._2)
 
 // vocabArray: Chosen vocab (removing common terms)
 val numStopwords = 38
@@ -20,7 +15,7 @@ val vocabArray: Array[String] =
 val vocab: Map[String, Int] = vocabArray.zipWithIndex.toMap
 
 val documents: RDD[(Long, Vector)] = tokenized.zipWithIndex.map { case (tokens, id) =>
- val counts = new.mutable.HashMap[Int, Double]()
+ val counts = new mutable.HashMap[Int, Double]()
  tokens.foreach { term =>
  if (vocab.contains(term)) {
  val idx = vocab(term)
@@ -33,10 +28,10 @@ documents.collect
 
 val numTopics = 10
 val numIterations = 100
-val Ida = new LDA().setK(numTopics).setMaxIterations(numIterations)//.setOptimizer(new)
-val IdaModel = Ida.run(documents)
+val lda = new LDA().setK(numTopics).setMaxIterations(numIterations)//.setOptimizer(new)
+val ldaModel = lda.run(documents)
 
-val topicIndices = IdaModel.describeTopics(maxTermsPerTopic = 10)
+val topicIndices = ldaModel.describeTopics(maxTermsPerTopic = 10)
  topicIndices.foreach { case (terms, termWeights) =>
   println("TOPIC:")
   terms.zip(termWeights).foreach { case (term, weight) =>
