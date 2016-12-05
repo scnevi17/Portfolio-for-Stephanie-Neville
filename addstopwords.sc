@@ -1,5 +1,10 @@
 #!/usr/bin/env amm
 import scala.io.Source
+
+// File f is a two-column file with a text to strip stopwords from.
+
+
+
 @main
 def addstopwords(f: String) {
 
