@@ -1,4 +1,8 @@
 #!/usr/bin/env amm
+/*
+*/
+
+
 import scala.io.Source
 
 def lookupAnalysis(s: String, index: Vector[Array[String]]) = {
@@ -21,9 +25,14 @@ def alignedtext(surfaceText: String, analysisFile: String) {
 
   val analysisIndex = Source.fromFile(analysisFile).getLines.toVector.map(_.split("\t"))
 
-  val analyzed = surface.map(s => lookupAnalysis(s, analysisIndex))
 
-  val analyzedWithReff = reff.zip(analyzed)
+  val surfaceWords = surface.map(_.split("\\W").filterNot(_.isEmpty))
+  val analyzedWords = surfaceWords.map { ar => ar.map( lookupAnalysis(_,analysisIndex)) }
+
+
+   val analyzedText = analyzedWords.map(_.mkString(" "))
+
+  val analyzedWithReff = reff.zip(analyzedText)
   for (wd <- analyzedWithReff) {
     println(wd._1 + "\t" + wd._2)
   }
