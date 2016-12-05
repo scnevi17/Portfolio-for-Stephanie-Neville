@@ -3,19 +3,20 @@ import scala.io.Source
 @main
 def addstopwords(f: String) {
 
-println("This is the file we will analyze: " + f)
-val lines = Source.fromFile(f).getLines.toVector
+  println("This is the file we will analyze: " + f)
+  val lines = Source.fromFile(f).getLines.toVector
 
-val pairings = lines.map(_.split("\t")).filter(_.size == 2)
-val reff = pairings.map(_(0))
-val chunks = pairings.map(_(1))
+  val pairings = lines.map(_.split("\t")).filter(_.size == 2)
+  val reff = pairings.map(_(0))
+  val chunks = pairings.map(_(1))
 
-val stopwords = ("stoplist2.txt").split(" ")
-val chunksByWord = chunks.
- map(_.split("\\W")
- filterNot(stopwords.contains(_)))
+  val stopwords = Source.fromFile("stoplist2.txt").getLines.toVector.flatMap(_.split(" "))
+  val chunksByWord = chunks.
+       map(_.split("\\W").filterNot(stopwords.contains(_)))
+  val trimmedText = chunksByWord.map(_.mkString(" "))
 
-val filteredChunks = chunksByWord.map(_.mkString(" "))
-filteredChunks
-println(filteredChunks)
+  val indexedTrimmedText = reff.zip(trimmedText)
+  for (t <- indexedTrimmedText) {
+    println(t._1 + "\t" + t._2)
+  }
 }

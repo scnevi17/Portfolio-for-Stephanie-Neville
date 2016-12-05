@@ -18,12 +18,13 @@ def lookupAnalysis(s: String, index: Vector[Array[String]]) = {
 @main
 def alignedtext(surfaceText: String, analysisFile: String) {
 
-  val surface = Source.fromFile(surfaceText).getLines.toVector
+  val surface = Source.fromFile(surfaceText).getLines.toVector.filterNot(_.isEmpty)
+
   val pairings = surface.zipWithIndex
   val reff = pairings.map(_._2)
 
 
-  val analysisIndex = Source.fromFile(analysisFile).getLines.toVector.map(_.split("\t"))
+  val analysisIndex = Source.fromFile(analysisFile).getLines.toVector.map(_.split("\t").filterNot(_.isEmpty))
 
 
   val surfaceWords = surface.map(_.split("\\W").filterNot(_.isEmpty))
